@@ -1,3 +1,4 @@
+## Last update: 2025.04.24
 ## pycryptodome
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
@@ -8,8 +9,12 @@ STD_HASH = hashlib.sha256
 LEN_SAULT = 16
 ENCODING = 'utf-8'
 
-def hash_byte(data):
-	return STD_HASH(data).digest()
+def hash_byte(data, algo='sha256'):
+	if algo == 'sha256':
+		return STD_HASH(data).digest()
+	else:
+		print('**Hash: apply default MD5')
+		return STD_HASH(data).digest()
 
 def pwd_to_key(pwd):
 	return hash_byte(pwd.encode(ENCODING))
