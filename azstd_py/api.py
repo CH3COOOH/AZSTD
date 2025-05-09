@@ -5,12 +5,16 @@ class API:
 		self.target = target
 		self.headers = {}
 		self.body = {}
+		self.proxy = {}
 	
 	def set_headers(self, headers):
 		self.headers = headers
 	
 	def set_body(self, body):
 		self.body = body
+	
+	def add_proxy(self, proxy, type_='http'):
+		self.proxy[type_] = proxy
 	
 	def add_header(self, key, content):
 		self.headers[key] = content
@@ -29,7 +33,11 @@ class API:
 	def post(self, payload_type='json'):
 		response = {'code': -1}
 		if payload_type == 'json':
-			res = requests.post(self.target, headers=self.headers, json=self.body)
+			if len(self.proxy.keys()) == 0:
+				res = requests.post(self.target, headers=self.headers, json=self.body)
+			else:
+				# print('Use proxy: ' + str(self.proxy))
+				res = requests.post(self.target, headers=self.headers, json=self.body, proxies=self.proxy)
 			response['code'] = res.status_code
 			response['text'] = res.text
 		return response
