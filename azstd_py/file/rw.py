@@ -1,5 +1,10 @@
 ## Last update: 2025.04.30
 
+def read_t8(fname):
+	with open(fname, 'rb') as o:
+		buf = o.read().decode('utf-8')
+	return buf
+
 def gracefulRead(fname, method='r'):
 	with open(fname, method) as o:
 		buf = o.read()
