@@ -34,6 +34,9 @@ class LowestDB:
 
 	def __cmd_selectXFromWhereYeq_(self, X, Y):
 		return f"SELECT {X} FROM {self.table_name} WHERE {Y}=?"
+	
+	def __cmd_selectXFromWhereYlike_(self, X, Y):
+		return f"SELECT {X} FROM {self.table_name} WHERE {Y} like ?"
 
 	def __cmd_insertIntoValues_(self):
 		cmd_values = ''
@@ -142,6 +145,13 @@ class LowestDB:
 		conn = sqlite3.connect(self.db_fname)
 		c = conn.cursor()
 		res = list(c.execute(f"SELECT * FROM {self.table_name} LIMIT {n},{batchSize}"))
+		conn.close()
+		return res
+
+	def extract_rows_by_keyword(self, col, keyword):
+		conn = sqlite3.connect(self.db_fname)
+		c = conn.cursor()
+		res = list(c.execute(self.__cmd_selectXFromWhereYlike_('*', col), (f"%{keyword}%", )))
 		conn.close()
 		return res
 	
